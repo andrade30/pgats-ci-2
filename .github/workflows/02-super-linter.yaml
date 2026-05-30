@@ -34,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # Analisa somente arquivos alterados no PR
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: true
 
           # Linguagens utilizadas no projeto
           VALIDATE_JAVASCRIPT_ES: true
@@ -43,7 +43,7 @@ jobs:
           VALIDATE_YAML: true
 
           # Evita falhas por documentação e textos
-          VALIDATE_NATURAL_LANGUAGE: false
+          VALIDATE_NATURAL_LANGUAGE: true
 
           # Desabilite apenas se sua equipe não utilizar
           VALIDATE_JSCPD: true
