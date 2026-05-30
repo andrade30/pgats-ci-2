@@ -37,16 +37,13 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
 
           # Linguagens utilizadas no projeto
-          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_JAVASCRIPT_ESTANDARD: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
           VALIDATE_YAML: true
 
           # Evita falhas por documentação e textos
           VALIDATE_NATURAL_LANGUAGE: true
-
-          # Desabilite apenas se sua equipe não utilizar
-          VALIDATE_JSCPD: false
 
           # Branch padrão
           DEFAULT_BRANCH: main
