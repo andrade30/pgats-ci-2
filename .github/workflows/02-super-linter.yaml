@@ -46,7 +46,7 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: true
 
           # Desabilite apenas se sua equipe não utilizar
-          VALIDATE_JSCPD: true
+          VALIDATE_JSCPD: false
 
           # Branch padrão
           DEFAULT_BRANCH: main
