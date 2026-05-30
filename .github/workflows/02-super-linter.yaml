@@ -34,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # Analisa somente arquivos alterados no PR
-          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_ALL_CODEBASE: false
 
           # Linguagens utilizadas no projeto
           VALIDATE_JAVASCRIPT_ES: true
