@@ -35,6 +35,6 @@ test.describe(`user rides`, async () => {
     await page.getByLabel('Height for person').click();
     await page.getByLabel('Height for person').fill('141');
     await page.getByRole('button', { name: 'Next' }).click();
-    await expect(page.getByText('1 person (>= 141 cm) for the')).toBeVisible(());
+    await expect(page.getByText('1 person (>= 141 cm) for the')).toBeVisible();
   });
 });
