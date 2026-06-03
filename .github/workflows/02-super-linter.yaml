@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   lint:
-    name: Super-Linter
+    name: Super-git Linter
     runs-on: ubuntu-latest
 
     permissions:
