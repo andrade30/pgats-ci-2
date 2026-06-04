@@ -1,0 +1,163 @@
+name: Execução Manual QA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gate:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # =====================================
+      # Checkout
+      # =====================================
+      - name: Checkout do projeto
+        uses: actions/checkout@v5
+
+      # =====================================
+      # Node
+      # =====================================
+      - name: Configurar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: yarn
+
+      # =====================================
+      # Yarn
+      # =====================================
+      - name: Instalar Yarn
+        run: npm install -g yarn
+
+      # =====================================
+      # Dependências
+      # =====================================
+      - name: Instalar dependências
+        run: yarn install --frozen-lockfile
+
+      # =====================================
+      # Informações do ambiente
+      # =====================================
+      - name: Exibir versões
+        run: |
+          node -v
+          npm -v
+          yarn -v
+
+      # =====================================
+      # Lint
+      # =====================================
+      - name: Executar Lint
+        continue-on-error: true
+        run: |
+          if yarn run | grep -q "lint"; then
+            echo "Executando lint..."
+            yarn lint
+          else
+            echo "Script lint não encontrado."
+          fi
+
+      # =====================================
+      # Testes Unitários
+      # =====================================
+      - name: Executar Testes Unitários
+        continue-on-error: true
+        run: |
+          if yarn run | grep -q "test"; then
+            echo "Executando testes unitários..."
+            yarn test --coverage
+          else
+            echo "Script test não encontrado."
+          fi
+
+      # =====================================
+      # Playwright
+      # =====================================
+      - name: Instalar Browsers Playwright
+        continue-on-error: true
+        run: |
+          npx playwright install --with-deps
+
+      # =====================================
+      # E2E
+      # =====================================
+      - name: Executar Testes E2E
+        continue-on-error: true
+        run: |
+          if yarn run | grep -q "e2e"; then
+            echo "Executando testes E2E..."
+            yarn e2e
+          else
+            echo "Script e2e não encontrado."
+          fi
+
+      # =====================================
+      # Diagnóstico
+      # =====================================
+      - name: Diagnóstico dos relatórios
+        if: always()
+        run: |
+          echo "========== PLAYWRIGHT =========="
+          ls -la playwright-report || echo "playwright-report não encontrada"
+
+          echo "========== TEST RESULTS =========="
+          ls -la test-results || echo "test-results não encontrada"
+
+          echo "========== COVERAGE =========="
+          ls -la coverage || echo "coverage não encontrada"
+
+          echo "========== REPORTS =========="
+          ls -la reports || echo "reports não encontrada"
+
+      # =====================================
+      # Relatório Playwright
+      # =====================================
+      - name: Publicar Relatório Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # =====================================
+      # Evidências Playwright
+      # =====================================
+      - name: Publicar Evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # =====================================
+      # Cobertura Jest
+      # =====================================
+      - name: Publicar Cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # =====================================
+      # XML JUnit
+      # =====================================
+      - name: Publicar XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: results.xml
+          if-no-files-found: warn
+          retention-days: 30
