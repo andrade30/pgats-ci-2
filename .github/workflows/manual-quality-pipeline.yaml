@@ -161,4 +161,3 @@ jobs:
           path: results.xml
           if-no-files-found: warn
           retention-days: 30
-
