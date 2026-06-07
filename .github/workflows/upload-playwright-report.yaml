@@ -8,11 +8,9 @@ permissions:
 
 jobs:
   quality-gate:
-
     runs-on: ubuntu-latest
 
     steps:
-
       # =====================================
       # Checkout
       # =====================================
